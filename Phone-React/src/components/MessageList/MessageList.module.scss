@@ -1,0 +1,78 @@
+@use '../../styles/variables' as v;
+@use '../../styles/mixins' as m;
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: v.$space-2;
+  padding: v.$space-4;
+  overflow-y: auto;
+  height: 100%;
+}
+
+.row {
+  display: flex;
+  gap: v.$space-2;
+  max-width: 78%;
+}
+
+.rowMine {
+  align-self: flex-end;
+  flex-direction: row-reverse;
+}
+
+.bubble {
+  padding: v.$space-2 v.$space-3;
+  border-radius: v.$radius-md;
+  font-size: v.$font-size-base;
+  line-height: 1.4;
+  word-wrap: break-word;
+  background-color: v.$light-surface-alt;
+  color: v.$light-text;
+
+  body.dark-theme & {
+    background-color: v.$dark-surface-alt;
+    color: v.$dark-text;
+  }
+}
+
+.bubbleMine {
+  background-color: v.$color-brand;
+  color: #ffffff;
+
+  body.dark-theme & {
+    background-color: v.$color-brand;
+    color: #ffffff;
+  }
+}
+
+.meta {
+  display: block;
+  margin-top: 2px;
+  font-size: 11px;
+  color: v.$light-text-muted;
+
+  body.dark-theme & {
+    color: v.$dark-text-muted;
+  }
+}
+
+.metaMine {
+  text-align: right;
+  color: rgba(255, 255, 255, 0.85);
+
+  body.dark-theme & {
+    color: rgba(255, 255, 255, 0.85);
+  }
+}
+
+.empty {
+  @include m.flex-center;
+  height: 100%;
+  color: v.$light-text-muted;
+  font-size: v.$font-size-sm;
+
+  body.dark-theme & {
+    color: v.$dark-text-muted;
+  }
+}

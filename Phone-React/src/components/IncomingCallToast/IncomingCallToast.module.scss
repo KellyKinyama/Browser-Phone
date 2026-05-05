@@ -1,0 +1,77 @@
+@use '../../styles/variables' as v;
+@use '../../styles/mixins' as m;
+
+.toast {
+  position: fixed;
+  top: v.$space-5;
+  right: v.$space-5;
+  z-index: v.$z-toast;
+  display: flex;
+  align-items: center;
+  gap: v.$space-3;
+  padding: v.$space-3 v.$space-4;
+  min-width: 320px;
+  max-width: 420px;
+  background-color: v.$light-surface;
+  color: v.$light-text;
+  border-radius: v.$radius-lg;
+  box-shadow: v.$shadow-lg;
+  border: 1px solid v.$light-border;
+  animation: ringSlide 220ms ease-out;
+
+  body.dark-theme & {
+    background-color: v.$dark-surface;
+    color: v.$dark-text;
+    border-color: v.$dark-border;
+  }
+}
+
+.pulse {
+  position: relative;
+}
+
+.pulse::after {
+  content: '';
+  position: absolute;
+  inset: -4px;
+  border-radius: 50%;
+  border: 2px solid v.$color-success;
+  animation: pulse 1.6s ease-out infinite;
+  pointer-events: none;
+}
+
+.info {
+  flex: 1;
+  min-width: 0;
+}
+
+.label {
+  font-size: v.$font-size-sm;
+  color: v.$light-text-muted;
+
+  body.dark-theme & {
+    color: v.$dark-text-muted;
+  }
+}
+
+.name {
+  @include m.truncate;
+  font-size: v.$font-size-lg;
+  font-weight: 600;
+}
+
+.actions {
+  display: flex;
+  gap: v.$space-2;
+}
+
+@keyframes ringSlide {
+  from { opacity: 0; transform: translateY(-8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes pulse {
+  0%   { transform: scale(1);   opacity: 0.9; }
+  70%  { transform: scale(1.4); opacity: 0;   }
+  100% { transform: scale(1.4); opacity: 0;   }
+}

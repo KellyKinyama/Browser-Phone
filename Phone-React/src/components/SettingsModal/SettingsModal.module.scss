@@ -1,0 +1,90 @@
+@use '../../styles/variables' as v;
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: v.$space-4;
+}
+
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: v.$space-3;
+}
+
+.sectionTitle {
+  margin: 0;
+  font-size: v.$font-size-sm;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: v.$light-text-muted;
+
+  body.dark-theme & {
+    color: v.$dark-text-muted;
+  }
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: v.$space-1;
+}
+
+.label {
+  font-size: v.$font-size-sm;
+  font-weight: 500;
+}
+
+.input {
+  width: 100%;
+  padding: v.$space-2 v.$space-3;
+  border: 1px solid v.$light-border;
+  border-radius: v.$radius-md;
+  font-family: inherit;
+  font-size: v.$font-size-base;
+  background-color: v.$light-surface;
+  color: v.$light-text;
+  outline: none;
+  transition: border-color 120ms ease, box-shadow 120ms ease;
+
+  &:focus {
+    border-color: v.$color-brand;
+    box-shadow: 0 0 0 3px rgba(v.$color-brand, 0.18);
+  }
+
+  body.dark-theme & {
+    background-color: v.$dark-surface-alt;
+    color: v.$dark-text;
+    border-color: v.$dark-border;
+  }
+}
+
+.help {
+  font-size: 11px;
+  color: v.$light-text-muted;
+
+  body.dark-theme & {
+    color: v.$dark-text-muted;
+  }
+}
+
+.row {
+  display: grid;
+  grid-template-columns: 1fr 120px;
+  gap: v.$space-3;
+}
+
+.note {
+  margin: 0;
+  padding: v.$space-3;
+  border-radius: v.$radius-md;
+  background-color: rgba(v.$color-brand, 0.08);
+  color: v.$light-text;
+  font-size: v.$font-size-sm;
+  line-height: 1.4;
+
+  body.dark-theme & {
+    color: v.$dark-text;
+  }
+}

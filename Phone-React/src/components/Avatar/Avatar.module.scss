@@ -1,0 +1,32 @@
+@use '../../styles/variables' as v;
+@use '../../styles/mixins' as m;
+
+.avatar {
+  @include m.flex-center;
+  position: relative;
+  flex-shrink: 0;
+  background-color: v.$light-border;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  color: #ffffff;
+  font-weight: 600;
+  border-radius: 50%;
+  overflow: hidden;
+  user-select: none;
+
+  body.dark-theme & {
+    background-color: v.$dark-border;
+  }
+}
+
+.initials {
+  font-size: inherit;
+}
+
+// Sizes
+.xs { width: 24px; height: 24px; font-size: 10px; }
+.sm { width: 32px; height: 32px; font-size: 12px; }
+.md { width: 48px; height: 48px; font-size: 16px; }
+.lg { width: 64px; height: 64px; font-size: 20px; }
+.xl { width: 96px; height: 96px; font-size: 28px; }

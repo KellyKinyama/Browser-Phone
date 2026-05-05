@@ -1,0 +1,74 @@
+@use '../../styles/variables' as v;
+@use '../../styles/mixins' as m;
+
+.backdrop {
+  @include m.absolute-fill;
+  position: fixed;
+  background-color: rgba(0, 0, 0, 0.45);
+  z-index: v.$z-modal;
+  @include m.flex-center;
+  padding: v.$space-4;
+  animation: fadeIn 120ms ease-out;
+}
+
+.dialog {
+  background-color: v.$light-surface;
+  color: v.$light-text;
+  border-radius: v.$radius-lg;
+  box-shadow: v.$shadow-lg;
+  width: 100%;
+  max-width: 480px;
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  animation: slideUp 160ms ease-out;
+
+  body.dark-theme & {
+    background-color: v.$dark-surface;
+    color: v.$dark-text;
+  }
+}
+
+.header {
+  @include m.flex-between;
+  padding: v.$space-4 v.$space-5;
+  border-bottom: 1px solid v.$light-border;
+
+  body.dark-theme & {
+    border-bottom-color: v.$dark-border;
+  }
+}
+
+.title {
+  margin: 0;
+  font-size: v.$font-size-lg;
+  font-weight: 600;
+}
+
+.body {
+  padding: v.$space-5;
+  overflow-y: auto;
+}
+
+.footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: v.$space-2;
+  padding: v.$space-3 v.$space-5;
+  border-top: 1px solid v.$light-border;
+
+  body.dark-theme & {
+    border-top-color: v.$dark-border;
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}

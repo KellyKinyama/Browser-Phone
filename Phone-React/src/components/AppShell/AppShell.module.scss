@@ -1,0 +1,33 @@
+@use '../../styles/variables' as v;
+
+.shell {
+  display: flex;
+  height: 100%;
+  width: 100%;
+  background-color: v.$light-bg;
+  color: v.$light-text;
+  overflow: hidden;
+
+  body.dark-theme & {
+    background-color: v.$dark-bg;
+    color: v.$dark-text;
+  }
+}
+
+.main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  background-color: v.$light-surface;
+
+  body.dark-theme & {
+    background-color: v.$dark-surface;
+  }
+}
+
+.content {
+  flex: 1;
+  overflow-y: auto;
+  padding: v.$space-5;
+}

@@ -1,0 +1,27 @@
+@use '../../styles/variables' as v;
+@use '../../styles/mixins' as m;
+
+.controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: v.$space-3;
+  padding: v.$space-4 v.$space-5;
+  background-color: v.$light-bg;
+  border-top: 1px solid v.$light-border;
+
+  body.dark-theme & {
+    background-color: v.$dark-bg;
+    border-top-color: v.$dark-border;
+  }
+}
+
+.active {
+  background-color: v.$color-brand !important;
+  color: #ffffff !important;
+}
+
+.spacer {
+  flex: 1;
+}

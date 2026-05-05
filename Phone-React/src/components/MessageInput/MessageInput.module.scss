@@ -1,0 +1,44 @@
+@use '../../styles/variables' as v;
+@use '../../styles/mixins' as m;
+
+.composer {
+  display: flex;
+  align-items: flex-end;
+  gap: v.$space-2;
+  padding: v.$space-3 v.$space-4;
+  border-top: 1px solid v.$light-border;
+  background-color: v.$light-surface;
+
+  body.dark-theme & {
+    border-top-color: v.$dark-border;
+    background-color: v.$dark-surface;
+  }
+}
+
+.input {
+  flex: 1;
+  resize: none;
+  min-height: 40px;
+  max-height: 160px;
+  padding: v.$space-2 v.$space-3;
+  font-family: inherit;
+  font-size: v.$font-size-base;
+  line-height: 1.4;
+  border: 1px solid v.$light-border;
+  border-radius: v.$radius-md;
+  background-color: v.$light-surface;
+  color: v.$light-text;
+  outline: none;
+  transition: border-color 120ms ease, box-shadow 120ms ease;
+
+  &:focus {
+    border-color: v.$color-brand;
+    box-shadow: 0 0 0 3px rgba(v.$color-brand, 0.18);
+  }
+
+  body.dark-theme & {
+    background-color: v.$dark-surface-alt;
+    color: v.$dark-text;
+    border-color: v.$dark-border;
+  }
+}

@@ -1,0 +1,71 @@
+@use '../../styles/variables' as v;
+@use '../../styles/mixins' as m;
+
+.profile {
+  display: flex;
+  align-items: center;
+  gap: v.$space-3;
+  padding: v.$space-3 v.$space-4;
+  background-color: v.$light-bg;
+  border-bottom: 1px solid v.$light-border;
+
+  body.dark-theme & {
+    background-color: v.$dark-bg;
+    border-bottom-color: v.$dark-border;
+  }
+}
+
+.info {
+  flex: 1;
+  min-width: 0;
+}
+
+.nameRow {
+  display: flex;
+  align-items: center;
+  gap: v.$space-2;
+}
+
+.name {
+  @include m.truncate;
+  font-size: v.$font-size-base;
+  font-weight: 600;
+}
+
+.presence {
+  @include m.truncate;
+  font-size: v.$font-size-sm;
+  color: v.$light-text-muted;
+
+  body.dark-theme & {
+    color: v.$dark-text-muted;
+  }
+}
+
+.actions {
+  display: flex;
+  gap: v.$space-1;
+  align-items: center;
+}
+
+.voicemailBadge {
+  position: relative;
+}
+
+.voicemailCount {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 5px;
+  border-radius: v.$radius-pill;
+  background-color: v.$color-danger;
+  color: #ffffff;
+  font-size: 10px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}

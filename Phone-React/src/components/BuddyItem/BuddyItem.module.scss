@@ -1,0 +1,93 @@
+@use '../../styles/variables' as v;
+@use '../../styles/mixins' as m;
+
+.buddy {
+  display: flex;
+  align-items: center;
+  gap: v.$space-3;
+  padding: v.$space-2 v.$space-4;
+  border-left: 3px solid transparent;
+  cursor: pointer;
+  transition: background-color 120ms ease;
+
+  &:hover {
+    background-color: v.$light-surface-alt;
+  }
+
+  body.dark-theme &:hover {
+    background-color: v.$dark-surface-alt;
+  }
+}
+
+.selected {
+  background-color: v.$light-surface-alt;
+  border-left-color: v.$color-brand;
+
+  body.dark-theme & {
+    background-color: v.$dark-surface-alt;
+  }
+}
+
+.activeCall {
+  border-left-color: v.$color-success;
+}
+
+.onHold {
+  border-left-color: v.$color-muted;
+  opacity: 0.85;
+}
+
+.info {
+  flex: 1;
+  min-width: 0;
+}
+
+.nameRow {
+  @include m.flex-between;
+  gap: v.$space-2;
+}
+
+.name {
+  @include m.truncate;
+  font-weight: 500;
+  font-size: v.$font-size-base;
+}
+
+.time {
+  font-size: v.$font-size-sm;
+  color: v.$light-text-muted;
+  flex-shrink: 0;
+
+  body.dark-theme & {
+    color: v.$dark-text-muted;
+  }
+}
+
+.subtitle {
+  @include m.flex-between;
+  gap: v.$space-2;
+  margin-top: 2px;
+}
+
+.preview {
+  @include m.truncate;
+  font-size: v.$font-size-sm;
+  color: v.$light-text-muted;
+
+  body.dark-theme & {
+    color: v.$dark-text-muted;
+  }
+}
+
+.unread {
+  flex-shrink: 0;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 6px;
+  border-radius: v.$radius-pill;
+  background-color: v.$color-brand;
+  color: #ffffff;
+  font-size: 10px;
+  font-weight: 700;
+  @include m.flex-center;
+}

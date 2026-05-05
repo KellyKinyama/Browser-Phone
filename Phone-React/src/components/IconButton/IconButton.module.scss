@@ -1,0 +1,50 @@
+@use '../../styles/variables' as v;
+@use '../../styles/mixins' as m;
+
+.iconButton {
+  @include m.reset-button;
+  @include m.flex-center;
+  @include m.focus-ring;
+  flex-shrink: 0;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  color: inherit;
+  background-color: transparent;
+  transition: background-color 120ms ease, color 120ms ease, transform 60ms ease;
+
+  &:hover:not(:disabled) {
+    background-color: rgba(0, 0, 0, 0.06);
+  }
+
+  body.dark-theme &:hover:not(:disabled) {
+    background-color: rgba(255, 255, 255, 0.08);
+  }
+
+  &:active {
+    transform: scale(0.95);
+  }
+
+  &:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+}
+
+// Sizes
+.sm { width: 28px; height: 28px; font-size: 12px; }
+.md { width: 36px; height: 36px; font-size: 14px; }
+.lg { width: 48px; height: 48px; font-size: 18px; }
+
+// Variants
+.brand   { color: v.$color-brand; }
+.success {
+  color: #ffffff;
+  background-color: v.$color-success;
+  &:hover:not(:disabled) { background-color: color-mix(in srgb, v.$color-success 88%, black); }
+}
+.danger {
+  color: #ffffff;
+  background-color: v.$color-danger;
+  &:hover:not(:disabled) { background-color: color-mix(in srgb, v.$color-danger 88%, black); }
+}

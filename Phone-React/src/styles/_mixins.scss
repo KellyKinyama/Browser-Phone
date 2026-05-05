@@ -1,0 +1,52 @@
+@use 'variables' as v;
+
+// ---------------------------------------------------------------------------
+// Reusable mixins for new React components.
+// ---------------------------------------------------------------------------
+
+@mixin flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@mixin flex-between {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+@mixin absolute-fill {
+  position: absolute;
+  inset: 0;
+}
+
+@mixin truncate {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+@mixin focus-ring($color: v.$color-brand) {
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+  &:focus-visible {
+    outline-color: $color;
+  }
+}
+
+@mixin reset-button {
+  background: none;
+  border: 0;
+  padding: 0;
+  margin: 0;
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+}
+
+// Media queries
+@mixin sm-up { @media (min-width: v.$bp-sm) { @content; } }
+@mixin md-up { @media (min-width: v.$bp-md) { @content; } }
+@mixin lg-up { @media (min-width: v.$bp-lg) { @content; } }
+@mixin xl-up { @media (min-width: v.$bp-xl) { @content; } }

@@ -1,0 +1,18 @@
+@use '../../styles/variables' as v;
+
+.list {
+  flex: 1;
+  overflow-y: auto;
+  padding: v.$space-2 0;
+}
+
+.empty {
+  padding: v.$space-6 v.$space-4;
+  text-align: center;
+  color: v.$light-text-muted;
+  font-size: v.$font-size-sm;
+
+  body.dark-theme & {
+    color: v.$dark-text-muted;
+  }
+}

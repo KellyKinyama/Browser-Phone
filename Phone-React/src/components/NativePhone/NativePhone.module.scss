@@ -1,0 +1,45 @@
+@use '../../styles/variables' as v;
+
+// Hide the legacy phone.js UI but keep the #Phone node mounted so phone.js
+// can still bootstrap its SIP stack and IndexedDB layer underneath.
+:global(#Phone) {
+  display: none !important;
+}
+
+.shell {
+  height: 100%;
+  width: 100%;
+}
+
+.headerBar {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: v.$space-2;
+  padding: v.$space-2 v.$space-4;
+  border-bottom: 1px solid v.$light-border;
+
+  body.dark-theme & {
+    border-bottom-color: v.$dark-border;
+  }
+}
+
+.placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  height: 100%;
+  color: v.$light-text-muted;
+  gap: v.$space-3;
+
+  body.dark-theme & {
+    color: v.$dark-text-muted;
+  }
+
+  i {
+    font-size: 48px;
+    opacity: 0.4;
+  }
+}

@@ -1,0 +1,29 @@
+@use 'variables' as v;
+
+// ---------------------------------------------------------------------------
+// Global base styles for the React shell.
+// NOTE: The legacy phone.css is loaded separately by PhoneApp and owns the
+// styling for the embedded jQuery phone UI. Keep this file minimal and only
+// add styles that affect the React-managed wrappers.
+// ---------------------------------------------------------------------------
+
+html,
+body,
+#root,
+#Phone {
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: v.$font-family-base;
+  font-size: v.$font-size-base;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}

@@ -1,0 +1,72 @@
+@use '../../styles/variables' as v;
+@use '../../styles/mixins' as m;
+
+.button {
+  @include m.reset-button;
+  @include m.flex-center;
+  @include m.focus-ring;
+  display: inline-flex;
+  gap: v.$space-2;
+  padding: v.$space-2 v.$space-4;
+  border-radius: v.$radius-md;
+  font-size: v.$font-size-base;
+  font-weight: 500;
+  transition: background-color 120ms ease, color 120ms ease, transform 60ms ease;
+  user-select: none;
+
+  &:active {
+    transform: translateY(1px);
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
+
+// Variants
+.primary {
+  background-color: v.$color-brand;
+  color: #ffffff;
+
+  &:hover:not(:disabled) {
+    background-color: v.$color-brand-hover;
+  }
+}
+
+.secondary {
+  background-color: transparent;
+  color: v.$color-brand;
+  border: 1px solid v.$color-brand;
+
+  &:hover:not(:disabled) {
+    background-color: rgba(v.$color-brand, 0.08);
+  }
+}
+
+.ghost {
+  background-color: transparent;
+  color: inherit;
+
+  &:hover:not(:disabled) {
+    background-color: rgba(0, 0, 0, 0.06);
+  }
+}
+
+.danger {
+  background-color: v.$color-danger;
+  color: #ffffff;
+
+  &:hover:not(:disabled) {
+    background-color: color-mix(in srgb, v.$color-danger 85%, black);
+  }
+}
+
+// Sizes
+.sm { padding: v.$space-1 v.$space-3; font-size: v.$font-size-sm; }
+.md { /* default */ }
+.lg { padding: v.$space-3 v.$space-5; font-size: v.$font-size-lg; }
+
+.block {
+  width: 100%;
+}

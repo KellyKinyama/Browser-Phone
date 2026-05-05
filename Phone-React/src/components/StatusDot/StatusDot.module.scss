@@ -1,0 +1,25 @@
+@use '../../styles/variables' as v;
+
+.dot {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: v.$color-muted;
+  border: 2px solid v.$light-surface;
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.08);
+
+  body.dark-theme & {
+    border-color: v.$dark-surface;
+  }
+}
+
+.online   { background-color: v.$color-success; }
+.busy     { background-color: v.$color-warning; }
+.failed   { background-color: v.$color-danger; }
+.offline  { background-color: v.$color-muted; }
+
+// Sizes
+.sm { width: 8px; height: 8px; }
+.md { /* default */ }
+.lg { width: 14px; height: 14px; }

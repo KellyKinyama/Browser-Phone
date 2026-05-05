@@ -1,0 +1,24 @@
+@use '../../styles/variables' as v;
+@use '../../styles/mixins' as m;
+
+.loading {
+  @include m.flex-center;
+  flex-direction: column;
+  gap: v.$space-3;
+  height: 100%;
+  width: 100%;
+  color: v.$light-text-muted;
+
+  body.dark-theme & {
+    color: v.$dark-text-muted;
+  }
+}
+
+.spinner {
+  font-size: v.$font-size-xl;
+  color: v.$color-brand;
+}
+
+.label {
+  font-size: v.$font-size-base;
+}

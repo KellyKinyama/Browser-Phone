@@ -1,0 +1,56 @@
+@use '../../styles/variables' as v;
+@use '../../styles/mixins' as m;
+
+.search {
+  display: flex;
+  align-items: center;
+  gap: v.$space-2;
+  padding: v.$space-2 v.$space-4;
+  border-bottom: 1px solid v.$light-border;
+
+  body.dark-theme & {
+    border-bottom-color: v.$dark-border;
+  }
+}
+
+.field {
+  position: relative;
+  flex: 1;
+}
+
+.icon {
+  position: absolute;
+  top: 50%;
+  left: v.$space-3;
+  transform: translateY(-50%);
+  color: v.$light-text-muted;
+  pointer-events: none;
+
+  body.dark-theme & {
+    color: v.$dark-text-muted;
+  }
+}
+
+.input {
+  width: 100%;
+  padding: v.$space-2 v.$space-3 v.$space-2 v.$space-6;
+  border: 1px solid v.$light-border;
+  border-radius: v.$radius-pill;
+  font-family: inherit;
+  font-size: v.$font-size-base;
+  background-color: v.$light-surface;
+  color: v.$light-text;
+  outline: none;
+  transition: border-color 120ms ease, box-shadow 120ms ease;
+
+  &:focus {
+    border-color: v.$color-brand;
+    box-shadow: 0 0 0 3px rgba(v.$color-brand, 0.18);
+  }
+
+  body.dark-theme & {
+    background-color: v.$dark-surface-alt;
+    color: v.$dark-text;
+    border-color: v.$dark-border;
+  }
+}

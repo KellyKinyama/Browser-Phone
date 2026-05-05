@@ -1,0 +1,15 @@
+@use '../../styles/variables' as v;
+
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  width: 320px;
+  height: 100%;
+  background-color: v.$light-surface;
+  border-right: 1px solid v.$light-border;
+
+  body.dark-theme & {
+    background-color: v.$dark-surface;
+    border-right-color: v.$dark-border;
+  }
+}

@@ -1,0 +1,25 @@
+@use '../../styles/variables' as v;
+
+.banner {
+  padding: v.$space-4 v.$space-5;
+  font-family: v.$font-family-base;
+  color: v.$color-danger;
+  background-color: rgba(v.$color-danger, 0.08);
+  border: 1px solid rgba(v.$color-danger, 0.4);
+  border-radius: v.$radius-md;
+  margin: v.$space-4;
+}
+
+.title {
+  margin: 0 0 v.$space-2 0;
+  font-size: v.$font-size-lg;
+  font-weight: 600;
+}
+
+.message {
+  margin: 0;
+  font-family: 'Consolas', 'Menlo', monospace;
+  font-size: v.$font-size-sm;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
