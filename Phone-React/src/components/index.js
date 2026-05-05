@@ -21,6 +21,7 @@ export { default as BuddyList } from './BuddyList';
 // Main panel contents
 export { default as DialPad } from './DialPad';
 export { default as CallControls } from './CallControls';
+export { default as ActiveCall } from './ActiveCall';
 export { default as MessageList } from './MessageList';
 export { default as MessageInput } from './MessageInput';
 export { default as IncomingCallToast } from './IncomingCallToast';

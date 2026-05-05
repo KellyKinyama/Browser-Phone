@@ -1,0 +1,59 @@
+@use '../../styles/variables' as v;
+@use '../../styles/mixins' as m;
+
+.wrap {
+  @include m.flex-center;
+  flex-direction: column;
+  gap: v.$space-3;
+  height: 100%;
+  padding: v.$space-5;
+}
+
+.name {
+  font-size: v.$font-size-xl;
+  font-weight: 600;
+}
+
+.number {
+  font-size: v.$font-size-base;
+  color: v.$light-text-muted;
+
+  body.dark-theme & {
+    color: v.$dark-text-muted;
+  }
+}
+
+.timer {
+  margin-top: v.$space-3;
+  font-size: v.$font-size-xl * 1.4;
+  font-weight: 300;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 1px;
+  color: v.$color-success;
+}
+
+.statusRow {
+  display: flex;
+  gap: v.$space-3;
+  align-items: center;
+  margin-top: v.$space-3;
+  font-size: v.$font-size-sm;
+  color: v.$light-text-muted;
+
+  body.dark-theme & {
+    color: v.$dark-text-muted;
+  }
+}
+
+.badge {
+  padding: 2px v.$space-2;
+  border-radius: v.$radius-pill;
+  font-size: 11px;
+  font-weight: 600;
+  background-color: v.$light-surface-alt;
+  color: inherit;
+
+  body.dark-theme & {
+    background-color: v.$dark-surface-alt;
+  }
+}

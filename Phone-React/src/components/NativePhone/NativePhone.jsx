@@ -1,5 +1,6 @@
 import { useCallback, useMemo, useState } from 'react';
 import useLegacyPhone from '../../lib/useLegacyPhone';
+import useBuddies from '../../lib/useBuddies';
 import {
   dial, endCall, hold, unhold, mute, unmute,
   answerAudio, answerVideo, rejectCall,
@@ -13,8 +14,7 @@ import SearchBar from '../SearchBar';
 import BuddyList from '../BuddyList';
 import DialPad from '../DialPad';
 import CallControls from '../CallControls';
-import MessageList from '../MessageList';
-import MessageInput from '../MessageInput';
+import ActiveCall from '../ActiveCall';
 import IncomingCallToast from '../IncomingCallToast';
 import ThemeToggle from '../ThemeToggle';
 import Loading from '../Loading';
@@ -23,6 +23,21 @@ import SettingsModal from '../SettingsModal';
 import Button from '../Button';
 
 import styles from './NativePhone.module.scss';
+
+// Best-effort: read the line number phone.js assigned to a SIP session.
+function getSessionLineNum(session) {
+  try {
+    if (session?.data?.line != null) return Number(session.data.line);
+    // Fallback: most-recent line in window.Lines
+    const lines = window.Lines;
+    if (Array.isArray(lines) && lines.length) {
+      return Number(lines[lines.length - 1].LineNumber);
+    }
+  } catch {
+    // ignore
+  }
+  return 1;
+}
 
 const ACTIVE_LINE = 0; // simple single-line model for now
 
@@ -41,7 +56,6 @@ export default function NativePhone({ phoneOptions = {} }) {
   const [held, setHeld]             = useState(false);
   const [search, setSearch]         = useState('');
   const [selectedId, setSelectedId] = useState(null);
-  const [messages, setMessages]     = useState([]);
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [regError, setRegError]   = useState(null);
 
@@ -74,13 +88,23 @@ export default function NativePhone({ phoneOptions = {} }) {
 
     web_hook_on_invite: (session) => {
       try {
+        const lineNum = getSessionLineNum(session);
+        const isOutbound = session?.data?.calldirection === 'outbound'
+          || session?.request?.method === undefined; // best-effort
+        // Outbound invites also fire here; we already created activeCall in onDialOut,
+        // so just patch the line number and skip the toast.
+        if (isOutbound) {
+          setActiveCall((prev) => (prev ? { ...prev, lineNum } : prev));
+          return;
+        }
         const remote = session?.remoteIdentity;
         const number = remote?.uri?.user || 'Unknown';
         const name   = remote?.displayName || number;
         const hasVideo = !!session?.request?.body?.includes?.('m=video');
-        setIncoming({ id: session?.id || Date.now(), lineNum: ACTIVE_LINE, callerName: name, callerNumber: number, hasVideo });
-      } catch {
-        setIncoming({ id: Date.now(), lineNum: ACTIVE_LINE, callerName: 'Incoming', callerNumber: '', hasVideo: false });
+        setIncoming({ id: session?.id || Date.now(), lineNum, callerName: name, callerNumber: number, hasVideo });
+      } catch (err) {
+        console.warn('[NativePhone] invite parse failed', err);
+        setIncoming({ id: Date.now(), lineNum: 1, callerName: 'Incoming', callerNumber: '', hasVideo: false });
       }
     },
 
@@ -90,24 +114,25 @@ export default function NativePhone({ phoneOptions = {} }) {
       setMuted(false);
       setHeld(false);
     },
-
-    web_hook_on_message: (message) => {
-      try {
-        const text = message?.request?.body || '';
-        const from = message?.request?.from?.uri?.user || 'unknown';
-        if (text) {
-          setMessages((prev) => [
-            ...prev,
-            { id: Date.now(), text, fromMe: false, senderName: from, time: new Date().toLocaleTimeString() },
-          ]);
-        }
-      } catch (err) {
-        console.warn('[NativePhone] failed to parse incoming message', err);
-      }
-    },
   }), []);
 
   const { status, error } = useLegacyPhone({ phoneOptions, webHooks, enabled: credsOk });
+
+  // Buddies sourced from phone.js's localStorage; empty until phone.js boots.
+  const allBuddies = useBuddies({ enabled: credsOk && status === 'ready' });
+  const filteredBuddies = useMemo(() => {
+    const q = search.trim().toLowerCase();
+    if (!q) return allBuddies;
+    return allBuddies.filter((b) =>
+      (b.name || '').toLowerCase().includes(q)
+      || (b.extension || '').toLowerCase().includes(q),
+    );
+  }, [allBuddies, search]);
+
+  const onSelectBuddy = useCallback((buddy) => {
+    setSelectedId(buddy.id);
+    // Clicking a buddy with an extension number could prefill the dial pad later.
+  }, []);
 
   // ---- Settings ---------------------------------------------------------
   const openSettings  = useCallback(() => setSettingsOpen(true), []);
@@ -122,13 +147,26 @@ export default function NativePhone({ phoneOptions = {} }) {
   const onDialOut = useCallback((number, type = 'audio') => {
     if (!number) return;
     dial(type, number, number);
-    setActiveCall({ number, name: number, lineNum: ACTIVE_LINE });
+    // The actual line number arrives via web_hook_on_invite for the outbound
+    // session; set a placeholder until then.
+    setActiveCall({ number, name: number, lineNum: null, startedAt: Date.now() });
   }, []);
+
+  const onCallBuddy = useCallback((buddy, type = 'audio') => {
+    const number = buddy?.extension;
+    if (!number) return;
+    onDialOut(number, type);
+  }, [onDialOut]);
 
   const onAnswer = useCallback((call, type = 'audio') => {
     if (type === 'video') answerVideo(call.lineNum);
     else                  answerAudio(call.lineNum);
-    setActiveCall({ number: call.callerNumber, name: call.callerName, lineNum: call.lineNum });
+    setActiveCall({
+      number: call.callerNumber,
+      name: call.callerName,
+      lineNum: call.lineNum,
+      startedAt: Date.now(),
+    });
     setIncoming(null);
   }, []);
 
@@ -155,14 +193,6 @@ export default function NativePhone({ phoneOptions = {} }) {
     if (held) unhold(activeCall.lineNum); else hold(activeCall.lineNum);
     setHeld((h) => !h);
   }, [activeCall, held]);
-
-  const onSendMessage = useCallback((text) => {
-    setMessages((prev) => [
-      ...prev,
-      { id: Date.now(), text, fromMe: true, time: new Date().toLocaleTimeString() },
-    ]);
-    // TODO: bridge to sipClient.sendMessage when added.
-  }, []);
 
   // ---- Render -----------------------------------------------------------
   return (
@@ -194,10 +224,11 @@ export default function NativePhone({ phoneOptions = {} }) {
               />
               <SearchBar value={search} onChange={setSearch} onFilter={() => {}} />
               <BuddyList
-                buddies={[]}
+                buddies={filteredBuddies}
                 selectedId={selectedId}
-                onSelect={(b) => setSelectedId(b.id)}
-                emptyText="Contacts will appear here once buddy sync is wired."
+                onSelect={onSelectBuddy}
+                onContextMenu={(b) => onCallBuddy(b, 'audio')}
+                emptyText={search ? 'No matches' : 'No contacts yet — add one in the legacy app or by calling a number.'}
               />
             </Sidebar>
           }
@@ -217,14 +248,7 @@ export default function NativePhone({ phoneOptions = {} }) {
           }
         >
           {activeCall ? (
-            <>
-              <div className={styles.placeholder}>
-                <i className="fa fa-phone" aria-hidden="true" />
-                <div>On call with <strong>{activeCall.name}</strong></div>
-              </div>
-              <MessageList messages={messages} />
-              <MessageInput onSend={onSendMessage} />
-            </>
+            <ActiveCall call={activeCall} muted={muted} held={held} />
           ) : (
             <DialPad onCall={onDialOut} />
           )}
